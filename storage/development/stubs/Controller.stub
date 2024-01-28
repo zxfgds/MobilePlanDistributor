@@ -1,0 +1,10 @@
+<?php
+
+namespace app\controller\admin;
+
+use app\logic\DUMMY_NAMELogic;
+
+class DUMMY_NAMEController extends Controller
+{
+    protected string $logic = DUMMY_NAMELogic::class;
+}

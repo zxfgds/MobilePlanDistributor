@@ -1,0 +1,10 @@
+<?php
+
+namespace app\logic;
+
+use app\model\DUMMY_NAME;
+
+class DUMMY_NAMELogic extends BaseLogic
+{
+    protected static string $model = DUMMY_NAME::class;
+}

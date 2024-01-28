@@ -1,0 +1,16 @@
+<?php
+
+namespace app\service\OperatorApi\Providers;
+
+use Api;
+
+//DUMMY_NAME
+class DUMMY_CLASS_NAME extends Base
+{
+    /**
+     * 当前接口文件完成状态
+     * @var string
+     */
+    public static bool $apiComplete = false;
+
+}

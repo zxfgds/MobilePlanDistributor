@@ -1,0 +1,91 @@
+<?php
+
+namespace app\library;
+
+use RuntimeException;
+use Socket;
+
+class RegexClient
+{
+	private string $socketPath;
+	private Socket $socket;
+
+	public function __construct (string $socketPath = '/tmp/pattern_matcher.sock')
+	{
+		$this->socketPath = $socketPath;
+	}
+
+//	public function __destruct ()
+//	{
+//		socket_close($this->socket);
+//	}
+
+	public function matchNumber (string $number)
+	: array|null
+	{
+		// 使用 trim() 清理 $number 变量
+		$number = trim($number);
+
+		$response = $this->sendRequest("MATCH_NUMBER {$number}");
+		return json_decode($response, TRUE);
+	}
+
+	private function sendRequest (string $request)
+	: string
+	{
+		$this->socket = $this->createSocket(TRUE);
+
+		socket_write($this->socket, $request . "\n");
+		$response = '';
+		$buf      = '';
+		// 定义响应结束标记
+		$eos = "\0";
+		while (socket_recv($this->socket, $buf, 1024, 0) > 0) {
+			$response .= $buf;
+			// 检查响应是否以预期的结束标记结尾
+			if (str_ends_with($response, $eos)) {
+				break;
+			}
+		}
+		socket_close($this->socket);
+		return $response;
+	}
+
+	private function createSocket (bool $throwOnError = TRUE)
+	: ?Socket
+	{
+		$socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
+		if (!$socket) {
+			throw new RuntimeException('Unable to create socket');
+		}
+		if (!socket_connect($socket, $this->socketPath)) {
+			throw new RuntimeException('Unable to connect to the Unix Socket');
+		}
+
+		// 设置读写超时
+		$timeout = ["sec" => 5, "usec" => 0];
+		socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, $timeout);
+		socket_set_option($socket, SOL_SOCKET, SO_SNDTIMEO, $timeout);
+
+		return $socket;
+	}
+
+	public function restart ()
+	: string
+	{
+		return $this->sendRequest("RESTART");
+	}
+
+	public function list ()
+	: array
+	{
+		$response = $this->sendRequest("LIST");
+		return json_decode($response, TRUE);
+	}
+
+	public function close ()
+	: void
+	{
+		socket_close($this->socket);
+	}
+}

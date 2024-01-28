@@ -1,0 +1,92 @@
+{
+  "name": "workerman/webman",
+  "type": "project",
+  "keywords": [
+    "high performance",
+    "http service"
+  ],
+  "homepage": "https://www.workerman.net",
+  "license": "MIT",
+  "description": "High performance HTTP Service Framework.",
+  "authors": [
+    {
+      "name": "walkor",
+      "email": "walkor@workerman.net",
+      "homepage": "https://www.workerman.net",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "email": "walkor@workerman.net",
+    "issues": "https://github.com/walkor/webman/issues",
+    "forum": "https://wenda.workerman.net/",
+    "wiki": "https://workerman.net/doc/webman",
+    "source": "https://github.com/walkor/webman"
+  },
+  "require": {
+    "php": ">=7.2",
+    "workerman/webman-framework": "^1.5.0",
+    "monolog/monolog": "^2.0",
+    "robmorgan/phinx": "^0.13.4",
+    "ext-json": "*",
+    "ext-redis": "*",
+    "psr/container": "^1.1.1",
+    "illuminate/database": "^10.1",
+    "illuminate/pagination": "^10.1",
+    "illuminate/events": "^10.1",
+    "symfony/var-dumper": "^6.2",
+    "phpoption/phpoption": "^1.9",
+    "vlucas/phpdotenv": "^5.5",
+    "webman/console": "^1.2",
+    "overtrue/socialite": "^4.8",
+    "w7corp/easywechat": "^6.7",
+    "ext-curl": "*",
+    "ext-fileinfo": "*",
+    "qiniu/php-sdk": "^7.8",
+    "qcloud/cos-sdk-v5": "^2.6",
+    "aliyuncs/oss-sdk-php": "^2.6",
+    "ext-imagick": "*",
+    "webman/gateway-worker": "^1.0",
+    "openspout/openspout": "^4.12",
+    "ext-zip": "*",
+    "jenner/simple_fork": "^1.2",
+    "elasticsearch/elasticsearch": "^8.6",
+    "webman/redis-queue": "^1.2",
+    "phpoffice/phpspreadsheet": "^1.28",
+    "overtrue/pinyin": "^5.0",
+    "firebase/php-jwt": "^6.4",
+    "overtrue/easy-sms": "^2.4",
+    "alipaysdk/easysdk": "^2.0",
+    "ext-sockets": "*"
+  },
+  "suggest": {
+    "ext-event": "For better performance. "
+  },
+  "autoload": {
+    "psr-4": {
+      "": "./",
+      "app\\": "./app",
+      "App\\": "./app"
+    },
+    "files": [
+      "./support/helpers.php",
+      "./app/functions.php"
+    ]
+  },
+  "scripts": {
+    "post-package-install": [
+      "support\\Plugin::install"
+    ],
+    "post-package-update": [
+      "support\\Plugin::install"
+    ],
+    "pre-package-uninstall": [
+      "support\\Plugin::uninstall"
+    ]
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  }
+}
